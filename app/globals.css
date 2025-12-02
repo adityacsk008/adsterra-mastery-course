@@ -104,3 +104,23 @@ h1, h2, h3, h4, h5, h6 {
 .countdown-label {
   @apply text-sm text-gray-600 uppercase;
 }
+
+/* WhatsApp Float Animation */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.95);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(0.95);
+    opacity: 1;
+  }
+}
+
+.whatsapp-pulse {
+  animation: pulse-ring 2s ease-in-out infinite;
+}
