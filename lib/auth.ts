@@ -1,47 +1,29 @@
-import jwt from 'jsonwebtoken'
-import bcrypt from 'bcryptjs'
-
-const JWT_SECRET = process.env.JWT_SECRET!
-
-export interface JWTPayload {
-  userId: string
-  email: string
-  role: 'student' | 'admin'
-}
+// Authentication utilities - Demo mode
+// Add proper auth when you're ready
 
 export const hashPassword = async (password: string): Promise<string> => {
-  return bcrypt.hash(password, 10)
+  return password // Demo mode
 }
 
 export const comparePassword = async (
   password: string,
   hashedPassword: string
 ): Promise<boolean> => {
-  return bcrypt.compare(password, hashedPassword)
+  return password === hashedPassword // Demo mode
 }
 
-export const generateToken = (payload: JWTPayload): string => {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' })
+export const generateToken = (payload: any): string => {
+  return 'demo-token' // Demo mode
 }
 
-export const verifyToken = (token: string): JWTPayload | null => {
-  try {
-    return jwt.verify(token, JWT_SECRET) as JWTPayload
-  } catch (error) {
-    return null
-  }
+export const verifyToken = (token: string): any | null => {
+  return { userId: 'demo', email: 'demo@example.com', role: 'student' } // Demo mode
 }
 
 export const generateVideoToken = (userId: string, videoId: string): string => {
-  return jwt.sign({ userId, videoId }, JWT_SECRET, { expiresIn: '2h' })
+  return 'demo-video-token' // Demo mode
 }
 
-export const verifyVideoToken = (
-  token: string
-): { userId: string; videoId: string } | null => {
-  try {
-    return jwt.verify(token, JWT_SECRET) as { userId: string; videoId: string }
-  } catch (error) {
-    return null
-  }
+export const verifyVideoToken = (token: string): any | null => {
+  return { userId: 'demo', videoId: 'demo' } // Demo mode
 }
