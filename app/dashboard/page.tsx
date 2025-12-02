@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Play, CheckCircle, Clock, Award, LogOut } from 'lucide-react'
+import { Play, CheckCircle, Clock, Award } from 'lucide-react'
 import toast from 'react-hot-toast'
+import DashboardLayout from '@/components/DashboardLayout'
 
 interface Module {
   id: string
@@ -21,25 +22,12 @@ interface Lesson {
 export default function DashboardPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(true)
-  const [user, setUser] = useState<any>(null)
   const [modules, setModules] = useState<Module[]>([])
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
-    checkAuth()
     fetchDashboardData()
   }, [])
-
-  const checkAuth = () => {
-    const token = localStorage.getItem('authToken')
-    if (!token) {
-      router.push('/login')
-      return
-    }
-    // Verify token and get user data
-    // For now, using placeholder
-    setUser({ name: 'Student', email: 'student@example.com' })
-  }
 
   const fetchDashboardData = async () => {
     try {
@@ -100,43 +88,21 @@ export default function DashboardPage() {
     return `${mins} min`
   }
 
-  const handleLogout = () => {
-    localStorage.removeItem('authToken')
-    router.push('/')
-  }
-
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="loader"></div>
-      </div>
+      <DashboardLayout>
+        <div className="flex items-center justify-center h-64">
+          <div className="loader"></div>
+        </div>
+      </DashboardLayout>
     )
   }
 
   return (
-    <div className="min-h-screen bg-light">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="container-custom py-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-primary">Adsterra Mastery</h1>
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-600">Welcome, {user?.name}</span>
-              <button 
-                onClick={handleLogout}
-                className="flex items-center gap-2 text-sm text-gray-600 hover:text-primary"
-              >
-                <LogOut size={16} />
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <div className="container-custom py-8">
+    <DashboardLayout>
+      <div className="space-y-6">
         {/* Welcome Banner */}
-        <div className="bg-gradient-to-r from-primary to-red-700 text-white rounded-custom-lg p-8 mb-8">
+        <div className="bg-gradient-to-r from-primary to-red-700 text-white rounded-custom-lg p-8">
           <h2 className="text-3xl font-bold mb-2">Welcome Back!</h2>
           <p className="text-lg opacity-90 mb-6">
             Continue your journey to becoming an Adsterra expert
@@ -158,7 +124,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Quick Stats */}
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
+        <div className="grid md:grid-cols-3 gap-6">
           <div className="card">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
@@ -237,7 +203,7 @@ export default function DashboardPage() {
 
         {/* Certificate Section */}
         {progress === 100 && (
-          <div className="card bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-200 mt-8">
+          <div className="card bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-200">
             <div className="flex items-center gap-4">
               <Award className="text-yellow-600" size={48} />
               <div className="flex-1">
@@ -251,6 +217,6 @@ export default function DashboardPage() {
           </div>
         )}
       </div>
-    </div>
+    </DashboardLayout>
   )
 }
