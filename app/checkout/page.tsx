@@ -4,46 +4,91 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { CreditCard, Shield, Check } from 'lucide-react'
 import toast from 'react-hot-toast'
+import { createRazorpayOrder, openRazorpayCheckout } from '@/lib/razorpay'
 
 export default function CheckoutPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const [paymentMethod, setPaymentMethod] = useState<'stripe' | 'paypal' | 'crypto'>('stripe')
+  const [currency, setCurrency] = useState<'INR' | 'USD'>('USD')
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
-    country: ''
+    country: '',
+    phone: ''
   })
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const prices = {
+    USD: 49,
+    INR: 3999
+  }
+
+  const handleRazorpayPayment = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!formData.fullName || !formData.email || !formData.country) {
+      toast.error('Please fill all required fields')
+      return
+    }
+
     setLoading(true)
 
     try {
-      const response = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...formData,
-          paymentMethod
-        })
-      })
+      // Create Razorpay order
+      const orderData = await createRazorpayOrder(prices[currency], currency)
 
-      const data = await response.json()
-
-      if (data.success) {
-        if (paymentMethod === 'stripe' && data.sessionUrl) {
-          window.location.href = data.sessionUrl
-        } else if (paymentMethod === 'paypal' && data.approvalUrl) {
-          window.location.href = data.approvalUrl
-        } else if (paymentMethod === 'crypto' && data.checkoutUrl) {
-          window.location.href = data.checkoutUrl
-        }
-      } else {
-        toast.error(data.message || 'Payment failed')
+      if (!orderData.success) {
+        throw new Error('Failed to create order')
       }
-    } catch (error) {
-      toast.error('Something went wrong. Please try again.')
+
+      // Open Razorpay checkout
+      await openRazorpayCheckout(
+        {
+          amount: orderData.amount,
+          currency: orderData.currency,
+          name: 'Adsterra Mastery',
+          description: 'Complete Adsterra Marketing Course',
+          orderId: orderData.orderId,
+          prefill: {
+            name: formData.fullName,
+            email: formData.email,
+            contact: formData.phone,
+          },
+          notes: {
+            course: 'Adsterra Mastery',
+            country: formData.country,
+          },
+        },
+        async (response) => {
+          // Payment successful
+          try {
+            const verifyResponse = await fetch('/api/razorpay/verify', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(response),
+            })
+
+            const verifyData = await verifyResponse.json()
+
+            if (verifyData.success) {
+              toast.success('Payment successful! Redirecting to dashboard...')
+              setTimeout(() => {
+                router.push('/dashboard')
+              }, 2000)
+            } else {
+              toast.error('Payment verification failed')
+            }
+          } catch (error) {
+            toast.error('Payment verification failed')
+          }
+        },
+        (error) => {
+          // Payment failed
+          toast.error(error.error || 'Payment cancelled')
+          setLoading(false)
+        }
+      )
+    } catch (error: any) {
+      toast.error(error.message || 'Payment failed')
     } finally {
       setLoading(false)
     }
@@ -98,18 +143,47 @@ export default function CheckoutPage() {
                   </ul>
                 </div>
 
+                {/* Currency Selector */}
+                <div className="border-t pt-4 mb-4">
+                  <label className="block text-sm font-medium mb-2">Select Currency</label>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setCurrency('USD')}
+                      className={`flex-1 px-4 py-3 rounded-custom border-2 transition-all ${
+                        currency === 'USD' 
+                          ? 'border-primary bg-primary/5 text-primary font-semibold' 
+                          : 'border-gray-300 hover:border-gray-400'
+                      }`}
+                    >
+                      USD $49
+                    </button>
+                    <button
+                      onClick={() => setCurrency('INR')}
+                      className={`flex-1 px-4 py-3 rounded-custom border-2 transition-all ${
+                        currency === 'INR' 
+                          ? 'border-primary bg-primary/5 text-primary font-semibold' 
+                          : 'border-gray-300 hover:border-gray-400'
+                      }`}
+                    >
+                      INR ₹3,999
+                    </button>
+                  </div>
+                </div>
+
                 <div className="border-t pt-4 space-y-2">
                   <div className="flex justify-between text-gray-600">
                     <span>Subtotal</span>
-                    <span>$197.00</span>
+                    <span>{currency === 'USD' ? '$197' : '₹15,999'}</span>
                   </div>
                   <div className="flex justify-between text-green-600 font-semibold">
                     <span>Launch Discount (75%)</span>
-                    <span>-$148.00</span>
+                    <span>-{currency === 'USD' ? '$148' : '₹11,999'}</span>
                   </div>
                   <div className="flex justify-between text-2xl font-bold pt-2 border-t">
                     <span>Total</span>
-                    <span className="text-primary">$49.00</span>
+                    <span className="text-primary">
+                      {currency === 'USD' ? `$${prices.USD}` : `₹${prices.INR}`}
+                    </span>
                   </div>
                 </div>
 
@@ -125,9 +199,9 @@ export default function CheckoutPage() {
             <div className="card">
               <h2 className="text-2xl font-bold mb-6">Billing Information</h2>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleRazorpayPayment} className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium mb-2">Full Name</label>
+                  <label className="block text-sm font-medium mb-2">Full Name *</label>
                   <input 
                     type="text"
                     required
@@ -139,7 +213,7 @@ export default function CheckoutPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">Email Address</label>
+                  <label className="block text-sm font-medium mb-2">Email Address *</label>
                   <input 
                     type="email"
                     required
@@ -151,7 +225,18 @@ export default function CheckoutPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">Country</label>
+                  <label className="block text-sm font-medium mb-2">Phone Number</label>
+                  <input 
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-custom focus:border-primary focus:outline-none"
+                    placeholder="+91 1234567890"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">Country *</label>
                   <select 
                     required
                     value={formData.country}
@@ -159,8 +244,8 @@ export default function CheckoutPage() {
                     className="w-full px-4 py-3 border border-gray-300 rounded-custom focus:border-primary focus:outline-none"
                   >
                     <option value="">Select Country</option>
-                    <option value="US">United States</option>
                     <option value="IN">India</option>
+                    <option value="US">United States</option>
                     <option value="GB">United Kingdom</option>
                     <option value="CA">Canada</option>
                     <option value="AU">Australia</option>
@@ -168,51 +253,13 @@ export default function CheckoutPage() {
                   </select>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium mb-3">Payment Method</label>
-                  <div className="space-y-3">
-                    <label className="flex items-center gap-3 p-4 border-2 rounded-custom cursor-pointer hover:border-primary transition-colors">
-                      <input 
-                        type="radio"
-                        name="payment"
-                        value="stripe"
-                        checked={paymentMethod === 'stripe'}
-                        onChange={(e) => setPaymentMethod(e.target.value as any)}
-                        className="w-4 h-4"
-                      />
-                      <CreditCard size={20} />
-                      <span className="flex-1">Credit / Debit Card</span>
-                      <div className="flex gap-2">
-                        <span className="text-xs bg-gray-100 px-2 py-1 rounded">Visa</span>
-                        <span className="text-xs bg-gray-100 px-2 py-1 rounded">Mastercard</span>
-                      </div>
-                    </label>
-
-                    <label className="flex items-center gap-3 p-4 border-2 rounded-custom cursor-pointer hover:border-primary transition-colors">
-                      <input 
-                        type="radio"
-                        name="payment"
-                        value="paypal"
-                        checked={paymentMethod === 'paypal'}
-                        onChange={(e) => setPaymentMethod(e.target.value as any)}
-                        className="w-4 h-4"
-                      />
-                      <span className="flex-1">PayPal</span>
-                      <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">PayPal</span>
-                    </label>
-
-                    <label className="flex items-center gap-3 p-4 border-2 rounded-custom cursor-pointer hover:border-primary transition-colors">
-                      <input 
-                        type="radio"
-                        name="payment"
-                        value="crypto"
-                        checked={paymentMethod === 'crypto'}
-                        onChange={(e) => setPaymentMethod(e.target.value as any)}
-                        className="w-4 h-4"
-                      />
-                      <span className="flex-1">Cryptocurrency</span>
-                      <span className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">BTC/ETH</span>
-                    </label>
+                <div className="bg-blue-50 border border-blue-200 rounded-custom p-4">
+                  <div className="flex items-start gap-3">
+                    <CreditCard className="text-blue-600 flex-shrink-0 mt-1" size={20} />
+                    <div className="text-sm text-blue-800">
+                      <p className="font-semibold mb-1">Secure Payment via Razorpay</p>
+                      <p>Supports Credit/Debit Cards, UPI, Net Banking, and Wallets</p>
+                    </div>
                   </div>
                 </div>
 
@@ -221,7 +268,7 @@ export default function CheckoutPage() {
                   disabled={loading}
                   className="w-full btn-primary text-lg py-4 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {loading ? 'Processing...' : 'Complete Purchase - $49'}
+                  {loading ? 'Processing...' : `Pay ${currency === 'USD' ? `$${prices.USD}` : `₹${prices.INR}`}`}
                 </button>
 
                 <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
