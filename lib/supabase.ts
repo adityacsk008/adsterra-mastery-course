@@ -1,12 +1,9 @@
-import { createClient } from '@supabase/supabase-js'
+// Supabase client - Optional for now
+// You can add credentials later when ready
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+export const supabase = null
+export const supabaseAdmin = null
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
-
-// Admin client with service role key (server-side only)
-export const supabaseAdmin = createClient(
-  supabaseUrl,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+// Placeholder functions
+export const getUser = async () => null
+export const createUser = async () => null
