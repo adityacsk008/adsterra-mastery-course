@@ -3,6 +3,7 @@ import { Inter, Poppins } from 'next/font/google'
 import './globals.css'
 import { Toaster } from 'react-hot-toast'
 import Script from 'next/script'
+import WhatsAppFloat from '@/components/WhatsAppFloat'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const poppins = Poppins({ 
@@ -117,6 +118,7 @@ export default function RootLayout({
       </head>
       <body className={`${inter.variable} ${poppins.variable}`}>
         {children}
+        <WhatsAppFloat />
         <Toaster position="top-right" />
       </body>
     </html>
