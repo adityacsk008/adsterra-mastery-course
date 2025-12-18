@@ -1,18 +1,20 @@
 'use client'
 
 import { useState } from 'react'
-import { Play, Shield, Award, Users } from 'lucide-react'
-import VideoModal from '../VideoModal'
+import { Play, CheckCircle, X } from 'lucide-react'
 
 export default function Hero() {
   const [showVideo, setShowVideo] = useState(false)
 
-  const scrollToPricing = () => {
-    document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })
-  }
+  const benefits = [
+    '5 Comprehensive Modules',
+    '4+ Hours of Video Content',
+    'Campaign Templates',
+    'Private Support Group'
+  ]
 
   return (
-    <section className="relative bg-gradient-to-br from-dark via-gray-900 to-dark text-white py-20 lg:py-32 overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-dark via-gray-900 to-dark text-white overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
@@ -21,109 +23,113 @@ export default function Hero() {
         }} />
       </div>
 
-      <div className="container-custom relative z-10">
+      <div className="container-custom relative z-10 py-20">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left: Text Content */}
-          <div className="space-y-8">
-            <div className="inline-block">
-              <span className="bg-primary/20 text-primary px-4 py-2 rounded-full text-sm font-semibold border border-primary/30">
-                🔥 Limited Launch Price
-              </span>
+          {/* Left Content */}
+          <div>
+            <div className="inline-block bg-primary/20 border border-primary text-primary px-4 py-2 rounded-full text-sm font-semibold mb-6">
+              🔥 Limited Time Offer - 75% OFF
             </div>
-
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+            
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
               Become an <span className="text-primary">Adsterra Expert</span> in 7 Days
             </h1>
-
-            <p className="text-xl text-gray-300 leading-relaxed">
-              Learn to create high-earning ad campaigns, scale traffic and withdraw payments internationally. Real proof, templates & a private support group included.
+            
+            <p className="text-xl text-gray-300 mb-8">
+              Learn to create high-earning ad campaigns, scale traffic and withdraw payments internationally. 
+              Real proof, templates & a private support group included.
             </p>
 
-            {/* CTAs */}
+            {/* Benefits */}
+            <div className="grid grid-cols-2 gap-4 mb-8">
+              {benefits.map((benefit, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <CheckCircle className="text-primary flex-shrink-0" size={20} />
+                  <span className="text-sm">{benefit}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <button 
-                onClick={scrollToPricing}
-                className="btn-primary text-lg px-8 py-4"
+              <a 
+                href="#pricing" 
+                className="btn-primary text-lg px-8 py-4 text-center"
               >
-                Get Instant Access
-              </button>
+                Get Instant Access - $49
+              </a>
               <button 
                 onClick={() => setShowVideo(true)}
                 className="btn-secondary text-lg px-8 py-4 flex items-center justify-center gap-2"
               >
                 <Play size={20} />
-                Watch Free Preview
+                Watch Preview
               </button>
             </div>
 
-            {/* Trust Badges */}
-            <div className="flex flex-wrap gap-6 pt-4">
-              <div className="flex items-center gap-2">
-                <Award className="text-primary" size={24} />
-                <span className="text-sm">Top Rated</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Users className="text-primary" size={24} />
-                <span className="text-sm">Trusted Worldwide</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Shield className="text-primary" size={24} />
-                <span className="text-sm">SSL Secure</span>
-              </div>
-            </div>
-
-            {/* Payment Logos */}
-            <div className="flex items-center gap-4 pt-2 opacity-70">
-              <span className="text-sm">We accept:</span>
-              <div className="flex gap-3">
-                <div className="bg-white/10 px-3 py-1 rounded text-xs">Visa</div>
-                <div className="bg-white/10 px-3 py-1 rounded text-xs">Mastercard</div>
-                <div className="bg-white/10 px-3 py-1 rounded text-xs">PayPal</div>
-                <div className="bg-white/10 px-3 py-1 rounded text-xs">Crypto</div>
-              </div>
-            </div>
+            <p className="text-sm text-gray-400 mt-6">
+              ✓ 3-Day Money-Back Guarantee • ✓ Lifetime Access • ✓ Instant Delivery
+            </p>
           </div>
 
-          {/* Right: Video Preview */}
+          {/* Right Content - Video Preview */}
           <div className="relative">
-            <div className="relative rounded-custom-lg overflow-hidden shadow-2xl border-4 border-primary/20">
+            <div className="relative rounded-custom-lg overflow-hidden shadow-2xl border-4 border-primary/30">
               <img 
-                src="/hero-thumbnail.jpg" 
-                alt="Course Preview" 
-                className="w-full h-auto"
-                onError={(e) => {
-                  e.currentTarget.src = 'https://via.placeholder.com/800x450/E50914/FFFFFF?text=Adsterra+Mastery+Course'
-                }}
+                src="https://via.placeholder.com/600x400/E50914/FFFFFF?text=Course+Preview"
+                alt="Course Preview"
+                className="w-full"
               />
               <button 
                 onClick={() => setShowVideo(true)}
-                className="absolute inset-0 flex items-center justify-center bg-black/40 hover:bg-black/60 transition-all group"
+                className="absolute inset-0 flex items-center justify-center bg-black/50 hover:bg-black/40 transition-all group"
               >
                 <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Play size={32} fill="white" />
+                  <Play size={32} className="text-white ml-1" />
                 </div>
               </button>
             </div>
 
-            {/* Floating Stats */}
-            <div className="absolute -bottom-6 -left-6 bg-white text-dark p-4 rounded-custom-lg shadow-xl">
-              <div className="text-3xl font-bold text-primary">500+</div>
-              <div className="text-sm">Students Enrolled</div>
-            </div>
-
-            <div className="absolute -top-6 -right-6 bg-white text-dark p-4 rounded-custom-lg shadow-xl">
-              <div className="text-3xl font-bold text-primary">4.9★</div>
-              <div className="text-sm">Average Rating</div>
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-4 mt-8">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-primary">500+</div>
+                <div className="text-sm text-gray-400">Students</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-primary">4.9/5</div>
+                <div className="text-sm text-gray-400">Rating</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-primary">24/7</div>
+                <div className="text-sm text-gray-400">Support</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
+      {/* Video Modal */}
       {showVideo && (
-        <VideoModal 
-          videoUrl="https://www.youtube.com/embed/dQw4w9WgXcQ" 
-          onClose={() => setShowVideo(false)} 
-        />
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
+          <div className="relative w-full max-w-4xl">
+            <button 
+              onClick={() => setShowVideo(false)}
+              className="absolute -top-12 right-0 text-white hover:text-primary transition-colors"
+            >
+              <X size={32} />
+            </button>
+            <div className="relative pt-[56.25%] bg-black rounded-custom-lg overflow-hidden">
+              <iframe
+                className="absolute inset-0 w-full h-full"
+                src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                title="Course Preview"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        </div>
       )}
     </section>
   )
