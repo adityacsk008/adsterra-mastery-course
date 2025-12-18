@@ -58,7 +58,7 @@ export default function SupportPage() {
           </a>
 
           <a 
-            href="mailto:nnafeesaha@gmail.com"
+            href="mailto:Adityaenigma92@gmail.com"
             className="card hover:shadow-lg transition-all cursor-pointer"
           >
             <div className="flex items-center gap-4">
@@ -68,7 +68,7 @@ export default function SupportPage() {
               <div className="flex-1">
                 <h3 className="text-xl font-semibold mb-1">Email Support</h3>
                 <p className="text-gray-600 text-sm">Send us an email</p>
-                <p className="text-primary font-semibold mt-2">nnafeesaha@gmail.com</p>
+                <p className="text-primary font-semibold mt-2">Adityaenigma92@gmail.com</p>
               </div>
             </div>
           </a>
@@ -130,15 +130,15 @@ export default function SupportPage() {
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-2">How do I get my certificate?</h4>
+              <h4 className="font-semibold mb-2">What's your refund policy?</h4>
               <p className="text-gray-600 text-sm">
-                Complete all lessons to unlock your certificate. You can download it from your profile or courses page.
+                We offer a 3-day money-back guarantee. Contact support if you're not satisfied with the course.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-2">What's your refund policy?</h4>
+              <h4 className="font-semibold mb-2">How do I add videos to my course?</h4>
               <p className="text-gray-600 text-sm">
-                We offer a 7-day money-back guarantee. Contact support if you're not satisfied with the course.
+                Check the HOW_TO_ADD_VIDEOS.md file in your repository for detailed instructions on uploading and managing course videos.
               </p>
             </div>
           </div>
