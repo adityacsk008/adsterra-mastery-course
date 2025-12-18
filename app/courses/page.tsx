@@ -117,7 +117,7 @@ export default function CoursesPage() {
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <Award size={16} className="text-gray-600" />
-                  <span>Certificate Available</span>
+                  <span></span>
                 </div>
               </div>
 
