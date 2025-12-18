@@ -12,7 +12,7 @@ export default function ProfilePage() {
   const [editMode, setEditMode] = useState(false)
   const [profileData, setProfileData] = useState({
     fullName: 'Aditya Kumar',
-    email: 'digitaladitya402@gmail.com',
+    email: 'Adityaenigma92@gmail.com',
     phone: '+91 8294523068',
     country: 'India',
     whatsapp: '+91 8294523068',
@@ -408,7 +408,7 @@ export default function ProfilePage() {
             </a>
 
             <a 
-              href="mailto:nnafeesaha@gmail.com"
+              href="mailto:Adityaenigma92@gmail.com"
               className="flex items-center gap-3 p-4 border rounded-custom hover:border-primary transition-colors"
             >
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
@@ -416,7 +416,7 @@ export default function ProfilePage() {
               </div>
               <div>
                 <div className="font-semibold">Email Support</div>
-                <div className="text-sm text-gray-600">nnafeesaha@gmail.com</div>
+                <div className="text-sm text-gray-600">Adityaenigma92@gmail.com</div>
               </div>
             </a>
           </div>
