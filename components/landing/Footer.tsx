@@ -1,5 +1,4 @@
-import Link from 'next/link'
-import { Mail, Phone } from 'lucide-react'
+import { Mail, Phone, MapPin } from 'lucide-react'
 
 export default function Footer() {
   return (
@@ -7,10 +6,10 @@ export default function Footer() {
       <div className="container-custom">
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
-          <div className="space-y-4">
-            <h3 className="text-2xl font-bold text-primary">Adsterra Mastery</h3>
+          <div>
+            <h3 className="text-2xl font-bold text-primary mb-4">Adsterra Mastery</h3>
             <p className="text-gray-400 text-sm">
-              Become an Adsterra expert and start earning with high-converting ad campaigns.
+              Master Adsterra advertising and start earning internationally with our comprehensive course.
             </p>
           </div>
 
@@ -18,21 +17,10 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2 text-sm">
-              <li>
-                <a href="#curriculum" className="text-gray-400 hover:text-primary transition-colors">
-                  Course Curriculum
-                </a>
-              </li>
-              <li>
-                <a href="#pricing" className="text-gray-400 hover:text-primary transition-colors">
-                  Pricing
-                </a>
-              </li>
-              <li>
-                <Link href="/checkout" className="text-gray-400 hover:text-primary transition-colors">
-                  Enroll Now
-                </Link>
-              </li>
+              <li><a href="#curriculum" className="text-gray-400 hover:text-primary transition-colors">Course Curriculum</a></li>
+              <li><a href="#pricing" className="text-gray-400 hover:text-primary transition-colors">Pricing</a></li>
+              <li><a href="#testimonials" className="text-gray-400 hover:text-primary transition-colors">Testimonials</a></li>
+              <li><a href="#faq" className="text-gray-400 hover:text-primary transition-colors">FAQ</a></li>
             </ul>
           </div>
 
@@ -40,21 +28,9 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Legal</h4>
             <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/privacy" className="text-gray-400 hover:text-primary transition-colors">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="text-gray-400 hover:text-primary transition-colors">
-                  Terms & Conditions
-                </Link>
-              </li>
-              <li>
-                <Link href="/refund" className="text-gray-400 hover:text-primary transition-colors">
-                  Refund Policy
-                </Link>
-              </li>
+              <li><a href="/privacy" className="text-gray-400 hover:text-primary transition-colors">Privacy Policy</a></li>
+              <li><a href="/terms" className="text-gray-400 hover:text-primary transition-colors">Terms & Conditions</a></li>
+              <li><a href="/refund" className="text-gray-400 hover:text-primary transition-colors">Refund Policy</a></li>
             </ul>
           </div>
 
@@ -63,15 +39,15 @@ export default function Footer() {
             <h4 className="font-semibold mb-4">Contact Us</h4>
             <ul className="space-y-3 text-sm">
               <li className="flex items-center gap-2 text-gray-400">
-                <Phone size={16} className="text-primary" />
-                <a href="https://wa.me/918294523068" className="hover:text-primary transition-colors">
-                  +91 8294523068
+                <Mail size={16} className="text-primary" />
+                <a href="mailto:Adityaenigma92@gmail.com" className="hover:text-primary transition-colors">
+                  Adityaenigma92@gmail.com
                 </a>
               </li>
               <li className="flex items-center gap-2 text-gray-400">
-                <Mail size={16} className="text-primary" />
-                <a href="mailto:nnafeesaha@gmail.com" className="hover:text-primary transition-colors">
-                  nnafeesaha@gmail.com
+                <Phone size={16} className="text-primary" />
+                <a href="https://wa.me/918294523068" className="hover:text-primary transition-colors">
+                  +91 8294523068
                 </a>
               </li>
             </ul>
@@ -81,10 +57,8 @@ export default function Footer() {
         {/* Newsletter */}
         <div className="border-t border-gray-800 pt-8 mb-8">
           <div className="max-w-md mx-auto text-center">
-            <h4 className="font-semibold mb-2">Stay Updated</h4>
-            <p className="text-sm text-gray-400 mb-4">
-              Get tips, updates, and exclusive offers delivered to your inbox
-            </p>
+            <h4 className="font-semibold mb-2">Subscribe to Our Newsletter</h4>
+            <p className="text-sm text-gray-400 mb-4">Get updates on new courses and exclusive offers</p>
             <form className="flex gap-2">
               <input 
                 type="email" 
@@ -98,12 +72,10 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Copyright */}
+        {/* Bottom Bar */}
         <div className="border-t border-gray-800 pt-8 text-center text-sm text-gray-400">
-          <p>© {new Date().getFullYear()} Adsterra Mastery. All rights reserved.</p>
-          <p className="mt-2">
-            Made with ❤️ for aspiring digital marketers worldwide
-          </p>
+          <p>&copy; {new Date().getFullYear()} Adsterra Mastery. All rights reserved.</p>
+          <p className="mt-2">Made with ❤️ for aspiring digital marketers</p>
         </div>
       </div>
     </footer>
