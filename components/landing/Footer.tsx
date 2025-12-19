@@ -1,4 +1,5 @@
-import { Mail, Phone, MapPin } from 'lucide-react'
+import { Mail, Phone, LogIn } from 'lucide-react'
+import Link from 'next/link'
 
 export default function Footer() {
   return (
@@ -11,6 +12,15 @@ export default function Footer() {
             <p className="text-gray-400 text-sm">
               Master Adsterra advertising and start earning internationally with our comprehensive course.
             </p>
+            
+            {/* Login Button */}
+            <Link 
+              href="/login"
+              className="mt-6 inline-flex items-center gap-2 bg-primary hover:bg-red-700 text-white px-6 py-3 rounded-custom font-semibold transition-all"
+            >
+              <LogIn size={18} />
+              Student Login
+            </Link>
           </div>
 
           {/* Quick Links */}
