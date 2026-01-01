@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Play, CheckCircle, Clock, Award, Eye } from 'lucide-react'
+import { Play, CheckCircle, Clock, Award, ExternalLink } from 'lucide-react'
 import toast from 'react-hot-toast'
 import DashboardLayout from '@/components/DashboardLayout'
 import { courseModules, getCourseStats } from '@/lib/courseData'
@@ -197,13 +197,15 @@ export default function DashboardPage() {
                               Completed
                             </span>
                           )}
-                          <button
-                            onClick={() => router.push(`/dashboard/watch/${lesson.id}`)}
+                          <a
+                            href={lesson.videoUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="btn-primary flex items-center gap-2 px-4 py-2 text-sm"
                           >
-                            <Eye size={16} />
+                            <ExternalLink size={16} />
                             Watch
-                          </button>
+                          </a>
                         </div>
                       </div>
                     )
