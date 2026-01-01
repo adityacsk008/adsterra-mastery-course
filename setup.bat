@@ -19,10 +19,12 @@ if not exist "package.json" (
 echo [OK] Found package.json
 echo.
 
-REM Step 1: Rename the lesson folder
+REM Step 1: Rename the lesson folders
 echo ========================================
-echo Step 1: Renaming lesson folder...
+echo Step 1: Renaming lesson folders...
 echo ========================================
+
+REM Rename lessonid to [id]
 if exist "app\dashboard\lesson\lessonid" (
     move "app\dashboard\lesson\lessonid" "app\dashboard\lesson\[id]"
     echo [OK] Folder renamed: lessonid -^> [id]
@@ -33,6 +35,18 @@ if exist "app\dashboard\lesson\lessonid" (
         echo [ERROR] lessonid folder not found!
         pause
         exit /b 1
+    )
+)
+
+REM Rename watchid to [id]
+if exist "app\dashboard\watch\watchid" (
+    move "app\dashboard\watch\watchid" "app\dashboard\watch\[id]"
+    echo [OK] Folder renamed: watchid -^> [id]
+) else (
+    if exist "app\dashboard\watch\[id]" (
+        echo [OK] Folder watch\[id] already exists
+    ) else (
+        echo [WARNING] watchid folder not found (optional)
     )
 )
 echo.
@@ -93,6 +107,11 @@ echo.
 echo All 15 videos are ready to play!
 echo - YouTube videos will embed directly
 echo - Google Drive videos have 'Watch Now' buttons
+echo - MOVIEX-style video player available
+echo.
+echo Two viewing modes:
+echo   - Dashboard view: Full lesson page with sidebar
+echo   - Watch mode: Cinematic MOVIEX-style player
 echo.
 echo Happy Teaching!
 echo.
