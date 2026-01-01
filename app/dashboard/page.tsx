@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Play, CheckCircle, Clock, Award, Lock } from 'lucide-react'
+import { Play, CheckCircle, Clock, Award, Eye } from 'lucide-react'
 import toast from 'react-hot-toast'
 import DashboardLayout from '@/components/DashboardLayout'
 import { courseModules, getCourseStats } from '@/lib/courseData'
@@ -26,7 +26,6 @@ export default function DashboardPage() {
 
   const fetchUserProgress = async () => {
     try {
-      // Fetch user progress from API
       const response = await fetch('/api/progress')
       if (response.ok) {
         const data = await response.json()
@@ -169,10 +168,9 @@ export default function DashboardPage() {
                     const isCompleted = userProgress[lesson.id]?.completed
                     
                     return (
-                      <button
+                      <div
                         key={lesson.id}
-                        onClick={() => router.push(`/dashboard/lesson/${lesson.id}`)}
-                        className="w-full flex items-center gap-4 p-4 rounded-custom hover:bg-light transition-colors text-left group"
+                        className="flex items-center gap-3 p-4 rounded-custom hover:bg-light transition-colors group"
                       >
                         <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
                           isCompleted ? 'bg-green-100' : 'bg-gray-100 group-hover:bg-primary/10'
@@ -193,12 +191,21 @@ export default function DashboardPage() {
                             </div>
                           )}
                         </div>
-                        {isCompleted && (
-                          <span className="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full flex-shrink-0">
-                            Completed
-                          </span>
-                        )}
-                      </button>
+                        <div className="flex items-center gap-2">
+                          {isCompleted && (
+                            <span className="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full flex-shrink-0">
+                              Completed
+                            </span>
+                          )}
+                          <button
+                            onClick={() => router.push(`/dashboard/watch/${lesson.id}`)}
+                            className="btn-primary flex items-center gap-2 px-4 py-2 text-sm"
+                          >
+                            <Eye size={16} />
+                            Watch
+                          </button>
+                        </div>
+                      </div>
                     )
                   })}
                 </div>
