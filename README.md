@@ -1,70 +1,123 @@
-# Adsterra Mastery - Premium Course Platform
+# 🎓 Adsterra Mastery Course Platform
 
-A high-converting, premium single-course website for selling the "Adsterra Mastery" course internationally with responsive landing page, secure checkout, member dashboard, and professional video player.
+Complete course management platform with 15 video lessons, progress tracking, and payment integration.
 
-## 🚀 Features
+## 🚀 ONE-COMMAND SETUP
 
-- **Modern Landing Page**: Hero, benefits, curriculum, testimonials, pricing with countdown
-- **Secure Checkout**: Stripe, PayPal, and Crypto payment support
-- **Member Dashboard**: Progress tracking, video player, resources
-- **Admin Panel**: Student management, content upload, analytics
-- **Video Streaming**: Secure video hosting with resume capability
-- **Authentication**: JWT-based auth with password reset
-- **Email Integration**: Mailchimp/ConvertKit for drip campaigns
-- **Analytics**: Google Analytics, Facebook Pixel tracking
-- **SEO Optimized**: Meta tags, Open Graph, JSON-LD schema
-- **GDPR Compliant**: Cookie consent, privacy policy
+### For Mac/Linux:
+```bash
+git clone https://github.com/adityacsk008/adsterra-mastery-course.git
+cd adsterra-mastery-course
+chmod +x setup.sh
+./setup.sh
+```
+
+### For Windows:
+```bash
+git clone https://github.com/adityacsk008/adsterra-mastery-course.git
+cd adsterra-mastery-course
+setup.bat
+```
+
+**That's it!** The script will:
+- ✅ Rename folders automatically
+- ✅ Install all dependencies
+- ✅ Create .env file
+- ✅ Build and verify project
+
+Then just run:
+```bash
+npm run dev
+```
+
+## 📹 All 15 Videos Included
+
+### Module 1: Adsterra Fundamentals (4 videos)
+- Secret Trick (Google Drive)
+- First Software Install Setup (YouTube)
+- First Software Blogger Setup (YouTube)
+- Second Software Setup (YouTube)
+
+### Module 2: Campaign Creation (2 videos)
+- Adsterra Direct Link High CPM Arbitrage (YouTube)
+- Adsterra Arbitrage New Secret Method (YouTube)
+
+### Module 3: Traffic Optimization (3 videos)
+- Organic Traffic Facebook Method - Part 1 (Google Drive)
+- Organic Traffic Facebook Method - Part 2 (Google Drive)
+- Organic Traffic Facebook Method - Part 3 (Google Drive)
+
+### Bonus Module: Instagram Method (4 videos)
+- Blogger Account Setup (YouTube)
+- Adsterra Account Setup (YouTube)
+- Traffic Tricks 1 (YouTube)
+- Traffic Tricks 2 (YouTube)
+
+## ✨ Features
+
+### Video Player
+- ✅ YouTube videos embed directly
+- ✅ Google Drive videos with **"Watch Now"** buttons
+- ✅ Auto-detects video type
+- ✅ Loading states & error handling
+- ✅ Open in new tab option
+
+### Dashboard
+- ✅ Progress tracking (% complete)
+- ✅ Module-wise organization
+- ✅ Mark lessons as complete
+- ✅ Next/Previous navigation
+- ✅ Course content sidebar
+- ✅ Certificate section
+
+### Payment Integration
+- ✅ Stripe
+- ✅ PayPal
+- ✅ Cryptocurrency
 
 ## 🛠️ Tech Stack
 
 - **Frontend**: Next.js 14, React, TypeScript, Tailwind CSS
-- **Backend**: Next.js API Routes, Node.js
+- **Backend**: Next.js API Routes
 - **Database**: Supabase (PostgreSQL)
-- **Payments**: Stripe, PayPal, Coinbase Commerce
-- **Video**: Cloudflare Stream / Vimeo Pro
+- **Payments**: Stripe, PayPal, Crypto
+- **Video**: YouTube + Google Drive
 - **Deployment**: Vercel
-- **Email**: SendGrid
-- **Analytics**: Google Analytics 4, Facebook Pixel
 
-## 📦 Installation
+## 📦 Manual Setup (If Scripts Don't Work)
 
-### Prerequisites
-
-- Node.js 18+ and npm
-- Supabase account
-- Stripe account
-- PayPal Business account (optional)
-- Coinbase Commerce account (optional)
-
-### Setup Steps
-
-1. **Clone the repository**
 ```bash
+# 1. Clone
 git clone https://github.com/adityacsk008/adsterra-mastery-course.git
 cd adsterra-mastery-course
-```
 
-2. **Install dependencies**
-```bash
+# 2. Rename folder (IMPORTANT!)
+# Mac/Linux:
+mv app/dashboard/lesson/lessonid "app/dashboard/lesson/[id]"
+
+# Windows:
+move app\dashboard\lesson\lessonid "app\dashboard\lesson\[id]"
+
+# 3. Install
 npm install
-```
 
-3. **Set up Supabase**
-   - Create a new project at [supabase.com](https://supabase.com)
-   - Run the SQL schema from `database/schema.sql` in the SQL Editor
-   - Copy your project URL and anon key
-
-4. **Configure environment variables**
-```bash
+# 4. Setup environment
 cp .env.example .env
+# Edit .env with your credentials
+
+# 5. Run
+npm run dev
 ```
 
-Edit `.env` with your credentials:
+## 🔐 Environment Variables
+
+Create `.env` file:
+
 ```env
 # Supabase
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_key
 
 # Stripe
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
@@ -72,238 +125,102 @@ STRIPE_SECRET_KEY=sk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 
 # JWT
-JWT_SECRET=your_random_32_char_secret
+JWT_SECRET=your_32_char_secret
 
 # Email
 SENDGRID_API_KEY=SG....
 FROM_EMAIL=nnafeesaha@gmail.com
-
-# Analytics
-NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
-NEXT_PUBLIC_FB_PIXEL_ID=your_pixel_id
 
 # App
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 COURSE_PRICE=49
 ```
 
-5. **Run development server**
+## 📁 Project Structure
+
+```
+adsterra-mastery-course/
+├── app/
+│   ├── dashboard/
+│   │   ├── page.tsx              # Main dashboard
+│   │   └── lesson/
+│   │       ├── [id]/             # Dynamic lesson pages
+│   │       │   └── page.tsx
+│   │       └── layout.tsx
+│   ├── api/
+│   │   └── progress/
+│   │       └── route.ts          # Progress tracking
+│   └── checkout/
+├── components/
+│   ├── VideoPlayer.tsx           # Enhanced video player
+│   └── DashboardLayout.tsx
+├── lib/
+│   └── courseData.ts             # All 15 videos data
+├── setup.sh                      # Mac/Linux setup script
+├── setup.bat                     # Windows setup script
+└── SETUP_GUIDE.md               # Detailed guide
+```
+
+## 🎬 How Videos Work
+
+### YouTube Videos:
+- Embed directly in player
+- "Open in YouTube" button
+- Auto-converts any YouTube URL format
+
+### Google Drive Videos:
+- Attempts to embed first
+- If embed fails, shows **"Watch Now"** button in 2 places:
+  - Info bar below video
+  - Blue instruction box
+- Opens video in new tab
+
+## 🚀 Deployment
+
+### Deploy to Vercel:
+
+1. Push to GitHub (already done ✅)
+2. Go to [vercel.com](https://vercel.com)
+3. Import your repository
+4. Add environment variables
+5. Deploy!
+
+**Important**: Make sure the `[id]` folder is properly named before deploying.
+
+## 🔧 Troubleshooting
+
+### Videos not playing?
+1. Check if folder is renamed: `app/dashboard/lesson/[id]`
+2. Clear browser cache
+3. Check console for errors
+
+### Setup script not working?
+Use manual setup instructions above.
+
+### Build errors?
+```bash
+rm -rf .next node_modules
+npm install
+npm run build
+```
+
+## 📞 Support
+
+- **Email**: nnafeesaha@gmail.com
+- **GitHub Issues**: [Create an issue](https://github.com/adityacsk008/adsterra-mastery-course/issues)
+
+## 📄 License
+
+This project is private and proprietary.
+
+## 🎉 Ready to Go!
+
+After running the setup script:
+
 ```bash
 npm run dev
 ```
 
 Visit [http://localhost:3000](http://localhost:3000)
 
-## 🔐 Stripe Setup
-
-1. Go to [Stripe Dashboard](https://dashboard.stripe.com)
-2. Get your API keys from Developers > API keys
-3. Set up webhook endpoint:
-   - URL: `https://yourdomain.com/api/webhooks/stripe`
-   - Events: `checkout.session.completed`, `payment_intent.succeeded`
-4. Copy webhook signing secret to `.env`
-
-## 📧 Email Setup (SendGrid)
-
-1. Create account at [SendGrid](https://sendgrid.com)
-2. Create API key with full access
-3. Verify sender email (nnafeesaha@gmail.com)
-4. Add API key to `.env`
-
-## 🎥 Video Hosting Options
-
-### Option 1: Cloudflare Stream (Recommended)
-```bash
-# Install Cloudflare SDK
-npm install cloudflare
-
-# Add to .env
-CLOUDFLARE_STREAM_API_TOKEN=your_token
-CLOUDFLARE_ACCOUNT_ID=your_account_id
-```
-
-### Option 2: Vimeo Pro
-```bash
-# Add to .env
-VIMEO_ACCESS_TOKEN=your_token
-VIMEO_CLIENT_ID=your_client_id
-VIMEO_CLIENT_SECRET=your_secret
-```
-
-## 🚀 Deployment to Vercel
-
-1. **Push to GitHub** (already done)
-
-2. **Import to Vercel**
-   - Go to [vercel.com](https://vercel.com)
-   - Click "Import Project"
-   - Select your GitHub repository
-   - Configure environment variables from `.env`
-
-3. **Set up custom domain**
-   - Add domain in Vercel dashboard
-   - Update DNS records as instructed
-   - SSL certificate auto-generated
-
-4. **Configure webhooks**
-   - Update Stripe webhook URL to production
-   - Test payment flow
-
-## 📁 Project Structure
-
-```
-adsterra-mastery-course/
-├── app/
-│   ├── layout.tsx              # Root layout with SEO
-│   ├── page.tsx                # Landing page
-│   ├── globals.css             # Global styles
-│   ├── checkout/
-│   │   └── page.tsx            # Checkout page
-│   ├── dashboard/
-│   │   ├── page.tsx            # Student dashboard
-│   │   └── lesson/[id]/page.tsx # Video player
-│   ├── admin/
-│   │   ├── page.tsx            # Admin dashboard
-│   │   ├── students/page.tsx   # Student management
-│   │   └── content/page.tsx    # Content management
-│   └── api/
-│       ├── auth/               # Authentication endpoints
-│       ├── checkout/           # Payment processing
-│       ├── webhooks/           # Payment webhooks
-│       └── admin/              # Admin API routes
-├── components/
-│   ├── landing/                # Landing page sections
-│   ├── dashboard/              # Dashboard components
-│   ├── admin/                  # Admin components
-│   └── shared/                 # Shared components
-├── lib/
-│   ├── supabase.ts             # Supabase client
-│   ├── stripe.ts               # Stripe configuration
-│   ├── auth.ts                 # Auth utilities
-│   └── utils.ts                # Helper functions
-├── database/
-│   └── schema.sql              # Database schema
-├── public/                     # Static assets
-└── package.json
-```
-
-## 🔑 API Endpoints
-
-### Authentication
-- `POST /api/auth/register` - Create account
-- `POST /api/auth/login` - Login
-- `POST /api/auth/reset-password` - Password reset
-
-### Checkout
-- `POST /api/checkout` - Create payment session
-- `POST /api/webhooks/stripe` - Stripe webhook
-- `POST /api/webhooks/paypal` - PayPal webhook
-
-### Dashboard
-- `GET /api/dashboard/progress` - Get user progress
-- `POST /api/dashboard/progress` - Update progress
-- `GET /api/dashboard/video-token` - Get signed video URL
-
-### Admin
-- `GET /api/admin/students` - List students
-- `POST /api/admin/content` - Upload content
-- `GET /api/admin/analytics` - Get analytics
-
-## 📊 Database Schema
-
-Key tables:
-- `users` - User accounts
-- `purchases` - Payment records
-- `modules` - Course modules
-- `lessons` - Individual lessons
-- `user_progress` - Progress tracking
-- `certificates` - Completion certificates
-
-See `database/schema.sql` for complete schema.
-
-## 🎨 Customization
-
-### Brand Colors
-Edit `tailwind.config.js`:
-```js
-colors: {
-  primary: '#E50914',  // Adsterra red
-  secondary: '#FFFFFF',
-  dark: '#121212',
-  light: '#F5F5F5',
-}
-```
-
-### Course Price
-Edit `.env`:
-```env
-COURSE_PRICE=49
-```
-
-### Content
-- Landing page: `components/landing/`
-- Copy: Edit component files directly
-- Images: Add to `public/` folder
-
-## 🧪 Testing
-
-### Test Stripe Payment
-Use test card: `4242 4242 4242 4242`
-- Expiry: Any future date
-- CVC: Any 3 digits
-- ZIP: Any 5 digits
-
-### Test PayPal
-Use PayPal sandbox credentials
-
-## 📈 Analytics Setup
-
-### Google Analytics
-1. Create GA4 property
-2. Add measurement ID to `.env`
-3. Events tracked automatically
-
-### Facebook Pixel
-1. Create pixel in Facebook Events Manager
-2. Add pixel ID to `.env`
-3. Track PageView, Purchase, Lead events
-
-## 🔒 Security
-
-- JWT tokens for authentication
-- Signed URLs for video access
-- HTTPS enforced
-- CSRF protection
-- Rate limiting on API routes
-- Input validation and sanitization
-
-## 📝 Legal Pages
-
-Create these pages:
-- `/privacy` - Privacy Policy
-- `/terms` - Terms & Conditions
-- `/refund` - Refund Policy
-
-Templates provided in `docs/legal/`
-
-## 🆘 Support
-
-- **WhatsApp**: +91 8294523068
-- **Email**: nnafeesaha@gmail.com
-
-## 📄 License
-
-Proprietary - All rights reserved
-
-## 🎯 Roadmap
-
-- [ ] Mobile app (PWA)
-- [ ] Affiliate program
-- [ ] Multi-language support
-- [ ] Live webinars integration
-- [ ] Quiz system
-- [ ] Discussion forums
-
----
-
-Made with ❤️ for Adsterra Mastery
+**All 15 videos are ready to play! Happy Teaching! 🚀**
