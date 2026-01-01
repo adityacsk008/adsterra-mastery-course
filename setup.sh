@@ -16,19 +16,30 @@ fi
 echo "✅ Found package.json"
 echo ""
 
-# Step 1: Rename the lesson folder
-echo "📁 Step 1: Renaming lesson folder..."
+# Step 1: Rename the lesson folders
+echo "📁 Step 1: Renaming lesson folders..."
+
+# Rename lessonid to [id]
 if [ -d "app/dashboard/lesson/lessonid" ]; then
     mv app/dashboard/lesson/lessonid "app/dashboard/lesson/[id]"
     echo "✅ Folder renamed: lessonid → [id]"
+elif [ -d "app/dashboard/lesson/[id]" ]; then
+    echo "✅ Folder [id] already exists"
 else
-    if [ -d "app/dashboard/lesson/[id]" ]; then
-        echo "✅ Folder [id] already exists"
-    else
-        echo "❌ Error: lessonid folder not found!"
-        exit 1
-    fi
+    echo "❌ Error: lessonid folder not found!"
+    exit 1
 fi
+
+# Rename watchid to [id]
+if [ -d "app/dashboard/watch/watchid" ]; then
+    mv app/dashboard/watch/watchid "app/dashboard/watch/[id]"
+    echo "✅ Folder renamed: watchid → [id]"
+elif [ -d "app/dashboard/watch/[id]" ]; then
+    echo "✅ Folder watch/[id] already exists"
+else
+    echo "⚠️  Warning: watchid folder not found (optional)"
+fi
+
 echo ""
 
 # Step 2: Install dependencies
@@ -78,5 +89,10 @@ echo ""
 echo "📹 All 15 videos are ready to play!"
 echo "✅ YouTube videos will embed directly"
 echo "✅ Google Drive videos have 'Watch Now' buttons"
+echo "✅ MOVIEX-style video player available"
+echo ""
+echo "🎬 Two viewing modes:"
+echo "   - Dashboard view: Full lesson page with sidebar"
+echo "   - Watch mode: Cinematic MOVIEX-style player"
 echo ""
 echo "Happy Teaching! 🚀"
