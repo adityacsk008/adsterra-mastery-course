@@ -124,23 +124,90 @@ export const courseModules: Module[] = [
   }
 ]
 
-// Helper function to get video embed URL
+// Helper function to get video embed URL with enhanced detection
 export function getVideoEmbedUrl(url: string): string {
-  // YouTube URLs
-  if (url.includes('youtube.com') || url.includes('youtu.be')) {
-    const videoId = url.includes('youtu.be') 
-      ? url.split('youtu.be/')[1]?.split('?')[0]
-      : url.split('v=')[1]?.split('&')[0]
-    return `https://www.youtube.com/embed/${videoId}`
+  if (!url) return ''
+  
+  try {
+    // YouTube URLs - Multiple formats
+    if (url.includes('youtube.com') || url.includes('youtu.be')) {
+      let videoId = ''
+      
+      // youtu.be format
+      if (url.includes('youtu.be/')) {
+        const parts = url.split('youtu.be/')[1]
+        videoId = parts ? parts.split('?')[0].split('&')[0].split('/')[0] : ''
+      }
+      // youtube.com/watch format
+      else if (url.includes('youtube.com/watch')) {
+        const urlObj = new URL(url)
+        videoId = urlObj.searchParams.get('v') || ''
+      }
+      // youtube.com/embed format (already embedded)
+      else if (url.includes('youtube.com/embed/')) {
+        return url
+      }
+      
+      if (videoId) {
+        // Remove any remaining query params or fragments
+        videoId = videoId.split('?')[0].split('#')[0]
+        return `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0&modestbranding=1`
+      }
+    }
+    
+    // Google Drive URLs - Multiple formats
+    if (url.includes('drive.google.com')) {
+      let fileId = ''
+      
+      // Pattern 1: /file/d/FILE_ID/view
+      const pattern1 = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/)
+      if (pattern1 && pattern1[1]) {
+        fileId = pattern1[1]
+      }
+      
+      // Pattern 2: /open?id=FILE_ID
+      if (!fileId) {
+        const pattern2 = url.match(/[?&]id=([a-zA-Z0-9_-]+)/)
+        if (pattern2 && pattern2[1]) {
+          fileId = pattern2[1]
+        }
+      }
+      
+      // Pattern 3: /d/FILE_ID
+      if (!fileId) {
+        const pattern3 = url.match(/\/d\/([a-zA-Z0-9_-]+)/)
+        if (pattern3 && pattern3[1]) {
+          fileId = pattern3[1]
+        }
+      }
+      
+      if (fileId) {
+        return `https://drive.google.com/file/d/${fileId}/preview`
+      }
+    }
+    
+    // If already an embed URL, return as is
+    if (url.includes('/embed/') || url.includes('/preview')) {
+      return url
+    }
+    
+  } catch (error) {
+    console.error('Error parsing video URL:', error)
   }
   
-  // Google Drive URLs
-  if (url.includes('drive.google.com')) {
-    const fileId = url.match(/\/d\/([^/]+)/)?.[1] || url.match(/id=([^&]+)/)?.[1]
-    return `https://drive.google.com/file/d/${fileId}/preview`
-  }
-  
+  // Return original URL if no pattern matched
   return url
+}
+
+// Get video type for display
+export function getVideoType(url: string): 'youtube' | 'drive' | 'unknown' {
+  if (url.includes('youtube.com') || url.includes('youtu.be')) {
+    return 'youtube'
+  }
+  if (url.includes('drive.google.com')) {
+    return 'drive'
+  }
+  return 'unknown'
 }
 
 // Calculate total course stats
