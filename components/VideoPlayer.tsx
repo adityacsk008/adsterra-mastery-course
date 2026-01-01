@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { AlertCircle, ExternalLink } from 'lucide-react'
+import { AlertCircle, ExternalLink, Loader } from 'lucide-react'
 
 interface VideoPlayerProps {
   videoUrl: string
@@ -11,6 +11,7 @@ interface VideoPlayerProps {
 export default function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
   const [embedUrl, setEmbedUrl] = useState('')
   const [videoType, setVideoType] = useState<'youtube' | 'drive' | 'unknown'>('unknown')
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
 
   useEffect(() => {
@@ -18,34 +19,62 @@ export default function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
   }, [videoUrl])
 
   const processVideoUrl = (url: string) => {
+    setLoading(true)
+    setError(false)
+    
     try {
-      // YouTube URLs
+      if (!url) {
+        setError(true)
+        setLoading(false)
+        return
+      }
+
+      let processedUrl = ''
+      let type: 'youtube' | 'drive' | 'unknown' = 'unknown'
+
+      // YouTube URLs - Enhanced detection
       if (url.includes('youtube.com') || url.includes('youtu.be')) {
         let videoId = ''
         
+        // youtu.be format
         if (url.includes('youtu.be/')) {
-          videoId = url.split('youtu.be/')[1]?.split('?')[0]?.split('&')[0] || ''
-        } else if (url.includes('youtube.com')) {
-          const urlParams = new URLSearchParams(url.split('?')[1])
-          videoId = urlParams.get('v') || ''
+          const parts = url.split('youtu.be/')[1]
+          videoId = parts ? parts.split('?')[0].split('&')[0].split('/')[0] : ''
+        }
+        // youtube.com/watch format
+        else if (url.includes('youtube.com/watch')) {
+          try {
+            const urlObj = new URL(url)
+            videoId = urlObj.searchParams.get('v') || ''
+          } catch {
+            // Fallback parsing
+            const match = url.match(/[?&]v=([^&]+)/)
+            videoId = match ? match[1] : ''
+          }
+        }
+        // youtube.com/embed format
+        else if (url.includes('youtube.com/embed/')) {
+          const match = url.match(/embed\/([^?&/]+)/)
+          videoId = match ? match[1] : ''
         }
         
         if (videoId) {
-          setEmbedUrl(`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`)
-          setVideoType('youtube')
-          return
+          // Clean video ID
+          videoId = videoId.split('?')[0].split('#')[0].split('&')[0]
+          processedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0&modestbranding=1&enablejsapi=1`
+          type = 'youtube'
         }
       }
       
-      // Google Drive URLs
-      if (url.includes('drive.google.com')) {
+      // Google Drive URLs - Enhanced detection
+      else if (url.includes('drive.google.com')) {
         let fileId = ''
         
-        // Extract file ID from different Google Drive URL formats
+        // Try multiple patterns
         const patterns = [
-          /\/file\/d\/([^/]+)/,
-          /id=([^&]+)/,
-          /\/d\/([^/]+)/
+          /\/file\/d\/([a-zA-Z0-9_-]+)/,
+          /[?&]id=([a-zA-Z0-9_-]+)/,
+          /\/d\/([a-zA-Z0-9_-]+)/
         ]
         
         for (const pattern of patterns) {
@@ -57,17 +86,24 @@ export default function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
         }
         
         if (fileId) {
-          setEmbedUrl(`https://drive.google.com/file/d/${fileId}/preview`)
-          setVideoType('drive')
-          return
+          processedUrl = `https://drive.google.com/file/d/${fileId}/preview`
+          type = 'drive'
         }
       }
+
+      if (processedUrl) {
+        setEmbedUrl(processedUrl)
+        setVideoType(type)
+        setLoading(false)
+      } else {
+        setError(true)
+        setLoading(false)
+      }
       
-      // If no pattern matched
-      setError(true)
     } catch (err) {
       console.error('Error processing video URL:', err)
       setError(true)
+      setLoading(false)
     }
   }
 
@@ -75,18 +111,29 @@ export default function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
     window.open(videoUrl, '_blank', 'noopener,noreferrer')
   }
 
+  if (loading) {
+    return (
+      <div className="relative w-full bg-gray-900 flex items-center justify-center" style={{ paddingBottom: '56.25%' }}>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <Loader className="text-white animate-spin mb-4" size={48} />
+          <p className="text-white">Loading video...</p>
+        </div>
+      </div>
+    )
+  }
+
   if (error || !embedUrl) {
     return (
       <div className="relative w-full bg-gray-900 flex items-center justify-center" style={{ paddingBottom: '56.25%' }}>
         <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
           <AlertCircle className="text-yellow-500 mb-4" size={48} />
-          <h3 className="text-white text-xl font-semibold mb-2">Video Player Issue</h3>
+          <h3 className="text-white text-xl font-semibold mb-2">Unable to Load Video</h3>
           <p className="text-gray-300 mb-6 max-w-md">
-            Unable to embed this video directly. Click below to watch it in a new tab.
+            The video cannot be embedded directly. Click below to watch it in a new tab.
           </p>
           <button
             onClick={openInNewTab}
-            className="btn-primary flex items-center gap-2"
+            className="bg-primary hover:bg-red-700 text-white px-6 py-3 rounded-lg flex items-center gap-2 transition-colors"
           >
             <ExternalLink size={20} />
             Open Video in New Tab
@@ -98,7 +145,7 @@ export default function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
 
   return (
     <div className="space-y-3">
-      <div className="relative w-full bg-black" style={{ paddingBottom: '56.25%' }}>
+      <div className="relative w-full bg-black rounded-lg overflow-hidden" style={{ paddingBottom: '56.25%' }}>
         <iframe
           src={embedUrl}
           title={title}
@@ -106,17 +153,27 @@ export default function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
           style={{ border: 'none' }}
+          loading="lazy"
         />
       </div>
       
-      {/* Fallback link */}
-      <div className="flex items-center justify-between text-sm">
-        <span className="text-gray-600">
-          {videoType === 'youtube' ? '📺 YouTube Video' : '📁 Google Drive Video'}
-        </span>
+      {/* Video Info & Controls */}
+      <div className="flex items-center justify-between text-sm bg-gray-50 p-3 rounded-lg">
+        <div className="flex items-center gap-2">
+          {videoType === 'youtube' && (
+            <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-medium">
+              📺 YouTube
+            </span>
+          )}
+          {videoType === 'drive' && (
+            <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-medium">
+              📁 Google Drive
+            </span>
+          )}
+        </div>
         <button
           onClick={openInNewTab}
-          className="text-primary hover:underline flex items-center gap-1"
+          className="text-primary hover:text-red-700 flex items-center gap-1 font-medium transition-colors"
         >
           <ExternalLink size={14} />
           Open in new tab
