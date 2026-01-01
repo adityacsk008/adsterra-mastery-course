@@ -1,6 +1,6 @@
 # 🎓 Adsterra Mastery Course Platform
 
-Complete course management platform with **15 video lessons**, progress tracking, payment integration, and **MOVIEX-style cinematic video player**! 🎬
+Complete course management platform with **15 video lessons**, progress tracking, **LIVE Razorpay payment integration**, and **MOVIEX-style cinematic video player**! 🎬
 
 ## 🚀 ONE-COMMAND SETUP
 
@@ -30,6 +30,26 @@ Then just run:
 npm run dev
 ```
 
+## 💳 LIVE PAYMENT GATEWAY
+
+### Razorpay Integration (LIVE)
+- ✅ **Live Key ID**: `rzp_live_Rt4YAKorcWpXT6`
+- ✅ **Live Secret**: `eVlJ4qnCKC4vDY3pmEXaG9wY`
+- ✅ Real-time payment processing
+- ✅ Automatic order creation
+- ✅ Payment verification
+- ✅ Secure checkout
+
+### Supported Currencies:
+- 💵 **USD**: $49
+- 💰 **INR**: ₹3,999
+
+## 📧 Contact & Support
+
+**Admin Email**: Adityaenigma92@gmail.com
+
+All payment notifications and support queries will be sent to this email.
+
 ## 🎬 TWO VIEWING MODES
 
 ### 1. **Dashboard View** (`/dashboard/lesson/[id]`)
@@ -39,14 +59,11 @@ npm run dev
 - Mark as complete
 - Next/Previous buttons
 
-### 2. **MOVIEX Player** (`/dashboard/watch/[id]`) ⭐ NEW!
-- **Cinematic full-screen experience**
-- Animated gradient background
-- Glowing logo with pulse effect
-- Clean, distraction-free interface
-- Previous/Next navigation
-- Direct link to dashboard
-- **Mobile-optimized** with responsive design
+### 2. **Watch External** (Click "Watch" button)
+- Opens video in new tab
+- Direct YouTube/Google Drive link
+- Clean viewing experience
+- Easy to return to dashboard
 
 ## 📹 All 15 Videos Included
 
@@ -73,15 +90,20 @@ npm run dev
 
 ## ✨ Features
 
+### Payment System
+- ✅ **LIVE Razorpay integration**
+- ✅ Secure payment processing
+- ✅ Multiple currency support (USD/INR)
+- ✅ Automatic order creation
+- ✅ Payment verification
+- ✅ Email notifications to admin
+
 ### Video Player
 - ✅ YouTube videos embed directly
-- ✅ Google Drive videos with **"Watch Now"** buttons
-- ✅ **MOVIEX-style cinematic player** with animations
+- ✅ Google Drive videos with external links
+- ✅ **"Watch" button** opens in new tab
 - ✅ Auto-detects video type
-- ✅ Loading states & error handling
 - ✅ Mobile-responsive design
-- ✅ Gradient animated background
-- ✅ Glowing effects and pulse animations
 
 ### Dashboard
 - ✅ Progress tracking (% complete)
@@ -92,19 +114,13 @@ npm run dev
 - ✅ Course content sidebar
 - ✅ Certificate section (100% complete)
 
-### Payment Integration
-- ✅ Stripe
-- ✅ PayPal
-- ✅ Cryptocurrency
-
 ## 🛠️ Tech Stack
 
 - **Frontend**: Next.js 14, React, TypeScript, Tailwind CSS
 - **Backend**: Next.js API Routes
 - **Database**: Supabase (PostgreSQL)
-- **Payments**: Stripe, PayPal, Crypto
+- **Payments**: Razorpay (LIVE)
 - **Video**: YouTube + Google Drive
-- **Player**: Custom MOVIEX-style player
 - **Deployment**: Vercel
 
 ## 📦 Manual Setup (If Scripts Don't Work)
@@ -144,22 +160,24 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 COURSE_PRICE=49
 CURRENCY=USD
 
-# Supabase (Optional - for progress tracking)
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_service_key
+# Admin Email
+ADMIN_EMAIL=Adityaenigma92@gmail.com
+FROM_EMAIL=Adityaenigma92@gmail.com
 
-# Stripe (Optional - for payments)
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
-STRIPE_SECRET_KEY=sk_test_...
-STRIPE_WEBHOOK_SECRET=whsec_...
+# Razorpay Payment Gateway (LIVE)
+NEXT_PUBLIC_RAZORPAY_KEY_ID=rzp_live_Rt4YAKorcWpXT6
+RAZORPAY_KEY_SECRET=eVlJ4qnCKC4vDY3pmEXaG9wY
 
-# JWT (Optional)
-JWT_SECRET=your_32_char_secret
+# Optional - Add when ready
+# NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+# NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+# SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 
-# Email (Optional)
-SENDGRID_API_KEY=SG....
-FROM_EMAIL=nnafeesaha@gmail.com
+# JWT Secret
+# JWT_SECRET=your_jwt_secret_key_min_32_chars
+
+# SendGrid Email
+# SENDGRID_API_KEY=your_sendgrid_api_key
 ```
 
 ## 📁 Project Structure
@@ -173,44 +191,51 @@ adsterra-mastery-course/
 │   │   │   └── [id]/             # Full lesson page
 │   │   │       └── page.tsx
 │   │   └── watch/
-│   │       └── [id]/             # MOVIEX player ⭐
+│   │       └── [id]/             # MOVIEX player
 │   │           └── page.tsx
 │   ├── api/
+│   │   ├── razorpay/
+│   │   │   ├── create-order/     # Create payment order
+│   │   │   └── verify/           # Verify payment
 │   │   └── progress/
 │   │       └── route.ts          # Progress tracking
 │   └── checkout/
+│       └── page.tsx              # Checkout with Razorpay
 ├── components/
 │   ├── VideoPlayer.tsx           # Enhanced video player
+│   ├── RazorpayCheckout.tsx      # Payment component
 │   └── DashboardLayout.tsx
 ├── lib/
-│   └── courseData.ts             # All 15 videos data
+│   ├── courseData.ts             # All 15 videos data
+│   └── razorpay.ts               # Razorpay utilities
 ├── setup.sh                      # Mac/Linux setup script
 ├── setup.bat                     # Windows setup script
-└── SETUP_GUIDE.md               # Detailed guide
+└── .env.example                  # Environment template
 ```
+
+## 💳 Payment Flow
+
+1. User visits `/checkout`
+2. Fills enrollment form
+3. Selects currency (USD/INR)
+4. Clicks "Pay Now"
+5. Razorpay checkout opens
+6. User completes payment
+7. Payment verified on backend
+8. User redirected to dashboard
+9. Admin receives notification at `Adityaenigma92@gmail.com`
 
 ## 🎬 How Videos Work
 
 ### YouTube Videos:
-- Embed directly in player
-- "Open in YouTube" button
-- Auto-converts any YouTube URL format
+- Click "Watch" button
+- Opens YouTube in new tab
+- Direct video link
 
 ### Google Drive Videos:
-- Attempts to embed first
-- If embed fails, shows **"Watch Now"** button in 2 places:
-  - Info bar below video
-  - Blue instruction box
-- Opens video in new tab
-
-### MOVIEX Player Features:
-- 🎨 Animated gradient background
-- ✨ Glowing logo with pulse effect
-- 📱 Mobile-optimized layout
-- 🎯 Clean, distraction-free interface
-- ⚡ Smooth transitions and animations
-- 🔄 Previous/Next navigation
-- 🏠 Quick return to dashboard
+- Click "Watch" button
+- Opens Google Drive in new tab
+- Direct video link
 
 ## 🚀 Deployment
 
@@ -219,7 +244,12 @@ adsterra-mastery-course/
 1. Push to GitHub (already done ✅)
 2. Go to [vercel.com](https://vercel.com)
 3. Import your repository
-4. Add environment variables
+4. Add environment variables:
+   ```
+   NEXT_PUBLIC_RAZORPAY_KEY_ID=rzp_live_Rt4YAKorcWpXT6
+   RAZORPAY_KEY_SECRET=eVlJ4qnCKC4vDY3pmEXaG9wY
+   ADMIN_EMAIL=Adityaenigma92@gmail.com
+   ```
 5. Deploy!
 
 **Important**: Make sure both `[id]` folders are properly named before deploying.
@@ -233,6 +263,11 @@ adsterra-mastery-course/
 2. Clear browser cache
 3. Check console for errors
 
+### Payment not working?
+1. Verify Razorpay keys in `.env`
+2. Check API routes: `/api/razorpay/create-order` and `/api/razorpay/verify`
+3. Ensure LIVE keys are used (not test keys)
+
 ### Setup script not working?
 Use manual setup instructions above.
 
@@ -245,16 +280,15 @@ npm run build
 
 ## 📱 Mobile Experience
 
-The MOVIEX player is fully optimized for mobile:
-- Logo moves to top-left corner
-- Buttons stack horizontally
-- Full-width video player
+Fully optimized for mobile devices:
+- Responsive design
 - Touch-friendly controls
-- Responsive font sizes
+- Mobile-optimized layouts
+- Fast loading times
 
 ## 📞 Support
 
-- **Email**: nnafeesaha@gmail.com
+- **Email**: Adityaenigma92@gmail.com
 - **GitHub Issues**: [Create an issue](https://github.com/adityacsk008/adsterra-mastery-course/issues)
 
 ## 📄 License
@@ -273,10 +307,11 @@ Visit [http://localhost:3000](http://localhost:3000)
 
 **Features:**
 - ✅ All 15 videos ready to play
-- ✅ Two viewing modes (Dashboard + MOVIEX)
+- ✅ LIVE Razorpay payment gateway
+- ✅ Watch button opens videos in new tab
 - ✅ Progress tracking
 - ✅ Mobile-responsive
-- ✅ Beautiful animations
 - ✅ Professional UI/UX
+- ✅ Admin email: Adityaenigma92@gmail.com
 
 **Happy Teaching! 🚀**
