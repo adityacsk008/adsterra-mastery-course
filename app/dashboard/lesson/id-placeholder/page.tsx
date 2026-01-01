@@ -149,7 +149,7 @@ export default function LessonPage() {
     return (
       <DashboardLayout>
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-primary"></div>
         </div>
       </DashboardLayout>
     )
@@ -174,7 +174,7 @@ export default function LessonPage() {
         {/* Back Button */}
         <button
           onClick={() => router.push('/dashboard')}
-          className="flex items-center gap-2 text-gray-600 hover:text-primary transition-colors"
+          className="flex items-center gap-2 text-gray-600 hover:text-primary transition-colors font-medium"
         >
           <ArrowLeft size={20} />
           <span>Back to Dashboard</span>
@@ -184,37 +184,39 @@ export default function LessonPage() {
           {/* Main Content - Video & Info */}
           <div className="lg:col-span-2 space-y-6">
             {/* Module & Lesson Title */}
-            <div>
-              <div className="text-sm text-primary font-medium mb-2">{currentModule.title}</div>
-              <h1 className="text-3xl font-bold mb-3">{currentLesson.title}</h1>
+            <div className="bg-gradient-to-r from-primary/5 to-red-50 p-6 rounded-lg border-l-4 border-primary">
+              <div className="text-sm text-primary font-semibold mb-2 uppercase tracking-wide">
+                {currentModule.title}
+              </div>
+              <h1 className="text-3xl font-bold mb-3 text-gray-900">{currentLesson.title}</h1>
               {currentLesson.description && (
-                <p className="text-gray-700">{currentLesson.description}</p>
+                <p className="text-gray-700 text-lg">{currentLesson.description}</p>
               )}
             </div>
 
             {/* Video Player */}
-            <div className="card p-0 overflow-hidden shadow-lg">
+            <div className="card p-0 overflow-hidden shadow-2xl">
               <VideoPlayer 
-                videoUrl={currentLesson.videoUrl}
+                lesson={currentLesson}
                 title={currentLesson.title}
               />
             </div>
 
             {/* Lesson Actions */}
-            <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex flex-wrap items-center justify-between gap-4 bg-white p-6 rounded-lg shadow-md">
               <div>
                 {!isCompleted ? (
                   <button
                     onClick={markAsComplete}
-                    className="btn-primary flex items-center gap-2 shadow-md hover:shadow-lg transition-shadow"
+                    className="btn-primary flex items-center gap-2 shadow-lg hover:shadow-xl transition-all text-lg px-8 py-4"
                   >
-                    <CheckCircle size={20} />
+                    <CheckCircle size={22} />
                     Mark as Complete
                   </button>
                 ) : (
-                  <div className="flex items-center gap-2 text-green-600 bg-green-50 px-5 py-3 rounded-lg border-2 border-green-200">
-                    <CheckCircle size={20} />
-                    <span className="font-semibold">Completed ✓</span>
+                  <div className="flex items-center gap-3 text-green-600 bg-green-50 px-6 py-4 rounded-lg border-2 border-green-300 shadow-md">
+                    <CheckCircle size={24} />
+                    <span className="font-bold text-lg">Completed ✓</span>
                   </div>
                 )}
               </div>
@@ -223,7 +225,7 @@ export default function LessonPage() {
                 {prevLesson && (
                   <button
                     onClick={() => router.push(`/dashboard/lesson/${prevLesson.lesson.id}`)}
-                    className="btn-secondary flex items-center gap-2"
+                    className="btn-secondary flex items-center gap-2 px-6 py-3"
                   >
                     <ChevronLeft size={20} />
                     Previous
@@ -232,7 +234,7 @@ export default function LessonPage() {
                 {nextLesson && (
                   <button
                     onClick={() => router.push(`/dashboard/lesson/${nextLesson.lesson.id}`)}
-                    className="btn-primary flex items-center gap-2"
+                    className="btn-primary flex items-center gap-2 px-6 py-3"
                   >
                     Next Lesson
                     <ChevronRight size={20} />
@@ -244,12 +246,14 @@ export default function LessonPage() {
 
           {/* Sidebar - Course Navigation */}
           <div className="lg:col-span-1">
-            <div className="card sticky top-6 shadow-lg">
-              <h3 className="text-lg font-semibold mb-4 pb-3 border-b">Course Content</h3>
-              <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
+            <div className="card sticky top-6 shadow-xl">
+              <h3 className="text-xl font-bold mb-4 pb-4 border-b-2 border-gray-200">
+                📚 Course Content
+              </h3>
+              <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
                 {courseModules.map((module) => (
-                  <div key={module.id} className="space-y-1">
-                    <div className="text-xs font-bold text-gray-800 px-3 py-2 bg-gradient-to-r from-gray-100 to-gray-50 rounded-lg sticky top-0 z-10">
+                  <div key={module.id} className="space-y-2">
+                    <div className="text-xs font-bold text-white px-4 py-3 bg-gradient-to-r from-primary to-red-600 rounded-lg sticky top-0 z-10 shadow-md">
                       {module.title}
                     </div>
                     {module.lessons.map((lesson, idx) => {
@@ -258,14 +262,14 @@ export default function LessonPage() {
                         <button
                           key={lesson.id}
                           onClick={() => router.push(`/dashboard/lesson/${lesson.id}`)}
-                          className={`w-full text-left px-3 py-2.5 rounded-lg text-sm hover:bg-light transition-all flex items-start gap-2 ${
+                          className={`w-full text-left px-4 py-3 rounded-lg text-sm transition-all flex items-start gap-3 ${
                             isActive 
-                              ? 'bg-primary/10 text-primary font-semibold border-l-3 border-primary shadow-sm' 
-                              : 'hover:shadow-sm'
+                              ? 'bg-primary text-white font-bold shadow-lg scale-105' 
+                              : 'hover:bg-gray-100 hover:shadow-md'
                           }`}
                         >
-                          <Play size={14} className="mt-0.5 flex-shrink-0" />
-                          <span className="line-clamp-2 text-xs leading-relaxed">
+                          <Play size={16} className="mt-0.5 flex-shrink-0" />
+                          <span className="line-clamp-2 leading-relaxed">
                             {idx + 1}. {lesson.title}
                           </span>
                         </button>
