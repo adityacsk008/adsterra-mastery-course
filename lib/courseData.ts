@@ -4,8 +4,10 @@ export interface Lesson {
   id: string
   title: string
   videoUrl: string
+  embedUrl?: string
   duration?: number
   description?: string
+  isDriveVideo?: boolean
 }
 
 export interface Module {
@@ -25,24 +27,29 @@ export const courseModules: Module[] = [
         id: 'lesson-1-1',
         title: 'Secret Trick',
         videoUrl: 'https://drive.google.com/file/d/1J4tPnt1RU7VJmNSzrBXavgkOcMCNuD3F/view?usp=sharing',
+        embedUrl: 'https://drive.google.com/file/d/1J4tPnt1RU7VJmNSzrBXavgkOcMCNuD3F/preview',
+        isDriveVideo: true,
         description: 'Learn the secret tricks to maximize your Adsterra earnings'
       },
       {
         id: 'lesson-1-2',
         title: 'First Software Install Setup Full Guide',
-        videoUrl: 'https://youtu.be/daCUC7nmyTE',
+        videoUrl: 'https://www.youtube.com/watch?v=daCUC7nmyTE',
+        embedUrl: 'https://www.youtube.com/embed/daCUC7nmyTE',
         description: 'Complete guide to installing and setting up your first software'
       },
       {
         id: 'lesson-1-3',
         title: 'First Software Blogger Setup',
-        videoUrl: 'https://youtu.be/daCUC7nmyTE',
+        videoUrl: 'https://www.youtube.com/watch?v=daCUC7nmyTE',
+        embedUrl: 'https://www.youtube.com/embed/daCUC7nmyTE',
         description: 'Step-by-step blogger setup tutorial'
       },
       {
         id: 'lesson-1-4',
         title: 'Second Software Setup',
-        videoUrl: 'https://youtu.be/goph5daUFyg',
+        videoUrl: 'https://www.youtube.com/watch?v=goph5daUFyg',
+        embedUrl: 'https://www.youtube.com/embed/goph5daUFyg',
         description: 'Setting up your second essential software'
       }
     ]
@@ -55,38 +62,46 @@ export const courseModules: Module[] = [
       {
         id: 'lesson-2-1',
         title: '🤑Adsterra Direct Link 🚀High CPM Arbitrage Free Tricks | Adsterra Arbitrage New Methods',
-        videoUrl: 'https://youtu.be/Ce_mw1b_ZPY',
+        videoUrl: 'https://www.youtube.com/watch?v=Ce_mw1b_ZPY',
+        embedUrl: 'https://www.youtube.com/embed/Ce_mw1b_ZPY',
         description: 'Discover direct link methods for high CPM arbitrage'
       },
       {
         id: 'lesson-2-2',
         title: 'Adsterra Arbitrage New Secret Method | Live Proof',
-        videoUrl: 'https://youtu.be/2xhRF6eAWLQ',
+        videoUrl: 'https://www.youtube.com/watch?v=2xhRF6eAWLQ',
+        embedUrl: 'https://www.youtube.com/embed/2xhRF6eAWLQ',
         description: 'New secret arbitrage method with live proof of earnings'
       }
     ]
   },
   {
     id: 'module-3',
-    title: 'Module 3: Traffic Optimization',
-    description: 'Optimize your traffic sources for maximum ROI',
+    title: 'Module 3: Traffic Optimization - Organic Traffic Facebook Method',
+    description: 'Master organic Facebook traffic generation in 3 parts',
     lessons: [
       {
         id: 'lesson-3-1',
         title: 'Organic Traffic Facebook Method - Part 1',
         videoUrl: 'https://drive.google.com/file/d/1SIcgMSs5H_IkD8tKfdAgU4SCMza4hG97/view?usp=drive_link',
+        embedUrl: 'https://drive.google.com/file/d/1SIcgMSs5H_IkD8tKfdAgU4SCMza4hG97/preview',
+        isDriveVideo: true,
         description: 'Learn organic Facebook traffic generation - Part 1'
       },
       {
         id: 'lesson-3-2',
         title: 'Organic Traffic Facebook Method - Part 2',
         videoUrl: 'https://drive.google.com/file/d/1KUV8Cg6mYGaLswksZG-buvqblHnkB7AS/view?usp=drive_link',
+        embedUrl: 'https://drive.google.com/file/d/1KUV8Cg6mYGaLswksZG-buvqblHnkB7AS/preview',
+        isDriveVideo: true,
         description: 'Learn organic Facebook traffic generation - Part 2'
       },
       {
         id: 'lesson-3-3',
         title: 'Organic Traffic Facebook Method - Part 3',
         videoUrl: 'https://drive.google.com/file/d/10S-5SeI89BVyOO9TJxZTPd1NuuvPbPKk/view?usp=drive_link',
+        embedUrl: 'https://drive.google.com/file/d/10S-5SeI89BVyOO9TJxZTPd1NuuvPbPKk/preview',
+        isDriveVideo: true,
         description: 'Learn organic Facebook traffic generation - Part 3'
       }
     ]
@@ -100,84 +115,80 @@ export const courseModules: Module[] = [
         id: 'bonus-1',
         title: 'Blogger Account Setup',
         videoUrl: 'https://www.youtube.com/watch?v=lRZvo2NKjWo',
+        embedUrl: 'https://www.youtube.com/embed/lRZvo2NKjWo',
         description: 'Complete blogger account setup guide'
       },
       {
         id: 'bonus-2',
         title: 'Adsterra Account Setup',
         videoUrl: 'https://www.youtube.com/watch?v=PzsWlZcrAP4',
+        embedUrl: 'https://www.youtube.com/embed/PzsWlZcrAP4',
         description: 'Step-by-step Adsterra account setup'
       },
       {
         id: 'bonus-3',
         title: 'Traffic Tricks 1',
-        videoUrl: 'https://www.youtube.com/watch?v=S5v8njdqLsk&t=9s',
+        videoUrl: 'https://www.youtube.com/watch?v=S5v8njdqLsk',
+        embedUrl: 'https://www.youtube.com/embed/S5v8njdqLsk',
         description: 'Essential traffic generation tricks - Part 1'
       },
       {
         id: 'bonus-4',
         title: 'Traffic Tricks 2',
         videoUrl: 'https://www.youtube.com/watch?v=WPvoNX0LUF4',
+        embedUrl: 'https://www.youtube.com/embed/WPvoNX0LUF4',
         description: 'Essential traffic generation tricks - Part 2'
       }
     ]
   }
 ]
 
-// Helper function to get video embed URL with enhanced detection
-export function getVideoEmbedUrl(url: string): string {
+// Helper function to get video embed URL
+export function getVideoEmbedUrl(lesson: Lesson): string {
+  // If embedUrl is provided, use it directly
+  if (lesson.embedUrl) {
+    return lesson.embedUrl
+  }
+  
+  const url = lesson.videoUrl
   if (!url) return ''
   
   try {
-    // YouTube URLs - Multiple formats
+    // YouTube URLs
     if (url.includes('youtube.com') || url.includes('youtu.be')) {
       let videoId = ''
       
-      // youtu.be format
       if (url.includes('youtu.be/')) {
         const parts = url.split('youtu.be/')[1]
         videoId = parts ? parts.split('?')[0].split('&')[0].split('/')[0] : ''
-      }
-      // youtube.com/watch format
-      else if (url.includes('youtube.com/watch')) {
+      } else if (url.includes('youtube.com/watch')) {
         const urlObj = new URL(url)
         videoId = urlObj.searchParams.get('v') || ''
-      }
-      // youtube.com/embed format (already embedded)
-      else if (url.includes('youtube.com/embed/')) {
+      } else if (url.includes('youtube.com/embed/')) {
         return url
       }
       
       if (videoId) {
-        // Remove any remaining query params or fragments
-        videoId = videoId.split('?')[0].split('#')[0]
+        videoId = videoId.split('?')[0].split('#')[0].split('&')[0]
         return `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0&modestbranding=1`
       }
     }
     
-    // Google Drive URLs - Multiple formats
+    // Google Drive URLs
     if (url.includes('drive.google.com')) {
       let fileId = ''
       
-      // Pattern 1: /file/d/FILE_ID/view
-      const pattern1 = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/)
-      if (pattern1 && pattern1[1]) {
-        fileId = pattern1[1]
-      }
+      const patterns = [
+        /\/file\/d\/([a-zA-Z0-9_-]+)/,
+        /[?&]id=([a-zA-Z0-9_-]+)/,
+        /\/d\/([a-zA-Z0-9_-]+)/
+      ]
       
-      // Pattern 2: /open?id=FILE_ID
-      if (!fileId) {
-        const pattern2 = url.match(/[?&]id=([a-zA-Z0-9_-]+)/)
-        if (pattern2 && pattern2[1]) {
-          fileId = pattern2[1]
-        }
-      }
-      
-      // Pattern 3: /d/FILE_ID
-      if (!fileId) {
-        const pattern3 = url.match(/\/d\/([a-zA-Z0-9_-]+)/)
-        if (pattern3 && pattern3[1]) {
-          fileId = pattern3[1]
+      for (const pattern of patterns) {
+        const match = url.match(pattern)
+        if (match && match[1]) {
+          fileId = match[1]
+          break
         }
       }
       
@@ -186,21 +197,18 @@ export function getVideoEmbedUrl(url: string): string {
       }
     }
     
-    // If already an embed URL, return as is
-    if (url.includes('/embed/') || url.includes('/preview')) {
-      return url
-    }
-    
   } catch (error) {
     console.error('Error parsing video URL:', error)
   }
   
-  // Return original URL if no pattern matched
   return url
 }
 
 // Get video type for display
-export function getVideoType(url: string): 'youtube' | 'drive' | 'unknown' {
+export function getVideoType(lesson: Lesson): 'youtube' | 'drive' | 'unknown' {
+  if (lesson.isDriveVideo) return 'drive'
+  
+  const url = lesson.videoUrl
   if (url.includes('youtube.com') || url.includes('youtu.be')) {
     return 'youtube'
   }
