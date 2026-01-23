@@ -157,10 +157,10 @@ export default function LoginPage() {
 
           {/* Demo Credentials */}
           <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-custom">
-            <p className="text-sm font-semibold text-blue-900 mb-2">🔑 Demo Credentials:</p>
+            <p className="text-sm font-semibold text-blue-900 mb-2">:</p>
             <div className="text-sm text-blue-800 space-y-1">
-              <p><strong>Username:</strong> demo</p>
-              <p><strong>Password:</strong> demo123</p>
+              <p><strong>Username:</strong> </p>
+              <p><strong>Password:</strong> </p>
             </div>
           </div>
 
